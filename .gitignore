@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+*.env.local
+
+# Frontend
+front/dashboard/node_modules/
+front/dashboard/dist/
+front/dashboard/.angular/

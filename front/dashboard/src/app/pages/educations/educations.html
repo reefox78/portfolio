@@ -1,0 +1,101 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Formations</h1>
+    <button mat-flat-button color="primary" (click)="openCreate()">
+      <mat-icon>add</mat-icon> Nouvelle formation
+    </button>
+  </div>
+
+  @if (showForm) {
+    <mat-card class="form-card">
+      <mat-card-title>{{ editingId ? 'Modifier' : 'Nouvelle' }} formation</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Intitulé du diplôme</mat-label>
+              <input matInput formControlName="degree" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>École</mat-label>
+              <input matInput formControlName="school" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Lieu</mat-label>
+              <input matInput formControlName="location" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width:140px">
+              <mat-label>Année d'obtention</mat-label>
+              <input matInput formControlName="graduationYear" type="number" />
+            </mat-form-field>
+          </div>
+          <div class="chips-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Ajouter une compétence</mat-label>
+              <input matInput formControlName="skillInput" (keyup.enter)="addChip()" />
+            </mat-form-field>
+            <button mat-icon-button type="button" (click)="addChip()"><mat-icon>add</mat-icon></button>
+          </div>
+          <mat-chip-set>
+            @for (chip of form.value.skills; track chip) {
+              <mat-chip (removed)="removeChip(chip)">
+                {{ chip }} <button matChipRemove><mat-icon>cancel</mat-icon></button>
+              </mat-chip>
+            }
+          </mat-chip-set>
+
+          <h3>Projets</h3>
+          @for (proj of projectsArray.controls; track $index; let i = $index) {
+            <mat-card class="project-card" [formGroup]="$any(proj)">
+              <div class="form-row">
+                <mat-form-field appearance="outline" style="width:200px">
+                  <mat-label>Nom du projet</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="flex-1">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput formControlName="description" rows="2"></textarea>
+                </mat-form-field>
+                <button mat-icon-button color="warn" type="button" (click)="removeProject(i)"><mat-icon>remove_circle</mat-icon></button>
+              </div>
+            </mat-card>
+          }
+          <button mat-stroked-button type="button" (click)="addProject()" style="margin-bottom:16px">
+            <mat-icon>add</mat-icon> Ajouter un projet
+          </button>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="showForm = false">Annuler</button>
+            <button mat-flat-button color="primary" type="submit">Enregistrer</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <mat-card>
+    <table mat-table [dataSource]="educations()" class="full-width">
+      <ng-container matColumnDef="degree">
+        <th mat-header-cell *matHeaderCellDef>Diplôme</th>
+        <td mat-cell *matCellDef="let e">{{ e.degree }}</td>
+      </ng-container>
+      <ng-container matColumnDef="school">
+        <th mat-header-cell *matHeaderCellDef>École — Lieu</th>
+        <td mat-cell *matCellDef="let e">{{ e.school }} — {{ e.location }}</td>
+      </ng-container>
+      <ng-container matColumnDef="graduationYear">
+        <th mat-header-cell *matHeaderCellDef>Année</th>
+        <td mat-cell *matCellDef="let e">{{ e.graduationYear }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let e">
+          <button mat-icon-button (click)="openEdit(e)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="delete(e.id)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>

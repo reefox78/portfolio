@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Messages de contact
+      @if (unreadCount() > 0) {
+        <span class="badge">{{ unreadCount() }} non lu(s)</span>
+      }
+    </h1>
+  </div>
+
+  <mat-card>
+    <table mat-table [dataSource]="messages()" class="full-width">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nom</th>
+        <td mat-cell *matCellDef="let m" [class.unread]="!m.read">{{ m.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let m">{{ m.email }}</td>
+      </ng-container>
+      <ng-container matColumnDef="subject">
+        <th mat-header-cell *matHeaderCellDef>Sujet</th>
+        <td mat-cell *matCellDef="let m">{{ m.subject || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let m">{{ m.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let m">
+          <button mat-icon-button (click)="toggle(m.id)" [title]="expanded === m.id ? 'Réduire' : 'Lire'">
+            <mat-icon>{{ expanded === m.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="delete(m.id)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="clickable-row"></tr>
+    </table>
+
+    @for (m of messages(); track m.id) {
+      @if (expanded === m.id) {
+        <div class="message-body">
+          <strong>Message de {{ m.name }} :</strong>
+          <p>{{ m.message }}</p>
+        </div>
+      }
+    }
+  </mat-card>
+</div>
