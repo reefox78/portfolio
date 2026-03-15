@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm init:*)",
+      "Bash(powershell.exe -Command \"Get-Command node,npm,bun,yarn -ErrorAction SilentlyContinue | Select-Object Name, Source\")",
+      "Bash(cmd.exe /c \"node --version & npm --version\")",
+      "Bash(cmd.exe /c \"ng version 2>&1 | head -5\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\micka\\\\Documents\" \")",
+      "Bash(cmd.exe /c \"ng version\")"
+    ]
+  }
+}

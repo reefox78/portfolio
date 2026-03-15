@@ -1,0 +1,38 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <div class="sidenav-header">
+      <mat-icon>admin_panel_settings</mat-icon>
+      <span>Admin Portfolio</span>
+    </div>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/projects" routerLinkActive="active">
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <span matListItemTitle>Projets</span>
+      </a>
+      <a mat-list-item routerLink="/skills" routerLinkActive="active">
+        <mat-icon matListItemIcon>psychology</mat-icon>
+        <span matListItemTitle>Skills</span>
+      </a>
+      <a mat-list-item routerLink="/experiences" routerLinkActive="active">
+        <mat-icon matListItemIcon>work</mat-icon>
+        <span matListItemTitle>Expériences</span>
+      </a>
+      <a mat-list-item routerLink="/educations" routerLinkActive="active">
+        <mat-icon matListItemIcon>school</mat-icon>
+        <span matListItemTitle>Formations</span>
+      </a>
+      <a mat-list-item routerLink="/messages" routerLinkActive="active">
+        <mat-icon matListItemIcon>mail</mat-icon>
+        <span matListItemTitle>Messages</span>
+      </a>
+    </mat-nav-list>
+    <div class="sidenav-footer">
+      <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon> Déconnexion
+      </button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content class="main-content">
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

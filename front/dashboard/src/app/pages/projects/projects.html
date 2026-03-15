@@ -1,0 +1,89 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Projets</h1>
+    <button mat-flat-button color="primary" (click)="openCreate()">
+      <mat-icon>add</mat-icon> Nouveau projet
+    </button>
+  </div>
+
+  @if (showForm) {
+    <mat-card class="form-card">
+      <mat-card-title>{{ editingId ? 'Modifier' : 'Nouveau' }} projet</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Titre</mat-label>
+              <input matInput formControlName="title" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Ordre</mat-label>
+              <input matInput formControlName="order" type="number" />
+            </mat-form-field>
+          </div>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+          </mat-form-field>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>URL Repo</mat-label>
+              <input matInput formControlName="repoUrl" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>URL Live</mat-label>
+              <input matInput formControlName="liveUrl" />
+            </mat-form-field>
+          </div>
+          <div class="chips-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Ajouter une techno</mat-label>
+              <input matInput formControlName="stackInput" (keyup.enter)="addChip()" />
+            </mat-form-field>
+            <button mat-icon-button type="button" (click)="addChip()"><mat-icon>add</mat-icon></button>
+          </div>
+          <mat-chip-set>
+            @for (chip of form.value.stack; track chip) {
+              <mat-chip (removed)="removeChip(chip)">
+                {{ chip }} <button matChipRemove><mat-icon>cancel</mat-icon></button>
+              </mat-chip>
+            }
+          </mat-chip-set>
+          <mat-checkbox formControlName="featured">Mis en avant</mat-checkbox>
+          <div class="form-actions">
+            <button mat-button type="button" (click)="showForm = false">Annuler</button>
+            <button mat-flat-button color="primary" type="submit">Enregistrer</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <mat-card>
+    <table mat-table [dataSource]="projects()" class="full-width">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Titre</th>
+        <td mat-cell *matCellDef="let p">{{ p.title }}</td>
+      </ng-container>
+      <ng-container matColumnDef="stack">
+        <th mat-header-cell *matHeaderCellDef>Stack</th>
+        <td mat-cell *matCellDef="let p">
+          <mat-chip-set><mat-chip *ngFor="let s of p.stack">{{ s }}</mat-chip></mat-chip-set>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="featured">
+        <th mat-header-cell *matHeaderCellDef>Mis en avant</th>
+        <td mat-cell *matCellDef="let p"><mat-icon>{{ p.featured ? 'star' : 'star_border' }}</mat-icon></td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p">
+          <button mat-icon-button (click)="openEdit(p)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="delete(p.id)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>
