@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+import { loginLimiter, contactLimiter } from "./middleware/rateLimiters";
 
 import projectsRouter from "./routes/projects";
 import skillsRouter from "./routes/skills";
@@ -46,24 +46,6 @@ app.use(cors({
     }
   },
 }));
-
-// Rate limiter : login (5 tentatives / 15 min)
-export const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: { error: "Trop de tentatives de connexion, réessayez dans 15 minutes" },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-// Rate limiter : formulaire contact (5 messages / heure)
-export const contactLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 5,
-  message: { error: "Trop de messages envoyés, réessayez dans 1 heure" },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 app.use(express.json());
 

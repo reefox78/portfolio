@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
-import { loginLimiter } from "../index";
+import { loginLimiter } from "../middleware/rateLimiters";
 
 const router = Router();
 

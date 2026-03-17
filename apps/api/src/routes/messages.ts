@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { requireAuth, AuthRequest } from "../middleware/auth";
-import { contactLimiter } from "../index";
+import { contactLimiter } from "../middleware/rateLimiters";
 
 const router = Router();
 
