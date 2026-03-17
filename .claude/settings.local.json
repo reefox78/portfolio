@@ -6,7 +6,9 @@
       "Bash(cmd.exe /c \"node --version & npm --version\")",
       "Bash(cmd.exe /c \"ng version 2>&1 | head -5\")",
       "Bash(cmd.exe /c \"dir C:\\\\Users\\\\micka\\\\Documents\" \")",
-      "Bash(cmd.exe /c \"ng version\")"
+      "Bash(cmd.exe /c \"ng version\")",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
