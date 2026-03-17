@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 import projectsRouter from "./routes/projects";
 import skillsRouter from "./routes/skills";
@@ -13,17 +15,56 @@ import educationsRouter from "./routes/educations";
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 
-// Middlewares globaux
-const allowedOrigins = (process.env.CORS_ORIGIN ?? "*").split(",").map(o => o.trim());
+// Sécurité : headers HTTP
+app.use(helmet());
+
+// CORS : uniquement les origins explicitement autorisées, pas de fallback wildcard
+const allowedOrigins = (process.env.CORS_ORIGIN ?? "")
+  .split(",")
+  .map(o => o.trim())
+  .filter(Boolean);
+
+if (allowedOrigins.length === 0) {
+  throw new Error("CORS_ORIGIN non configuré — serveur refusé de démarrer");
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    // Rejeter les requêtes sans header Origin (hors Postman/curl en dev)
+    if (!origin) {
+      if (process.env.NODE_ENV === "development") {
+        callback(null, true); // autoriser les tools dev (Postman, curl)
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+      return;
+    }
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
 }));
+
+// Rate limiter : login (5 tentatives / 15 min)
+export const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: "Trop de tentatives de connexion, réessayez dans 15 minutes" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Rate limiter : formulaire contact (5 messages / heure)
+export const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { error: "Trop de messages envoyés, réessayez dans 1 heure" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 app.use(express.json());
 
 // Routes

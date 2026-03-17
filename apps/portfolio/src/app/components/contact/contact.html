@@ -93,6 +93,12 @@
             [value]="form().message" (input)="update('message', $any($event.target).value)" required></textarea>
         </div>
 
+        <!-- Honeypot anti-spam : invisible pour les humains, rempli par les bots -->
+        <div style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" aria-hidden="true">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+            [value]="form()._gotcha" (input)="update('_gotcha', $any($event.target).value)" />
+        </div>
+
         <button type="submit" class="btn btn-primary submit-btn" [disabled]="status() === 'sending'">
           @if (status() === 'sending') {
             <span class="spinner"></span> Envoi...
