@@ -14,7 +14,7 @@ import { PortfolioService } from '../../services/portfolio.service';
 export class ContactComponent {
   private portfolio = inject(PortfolioService);
 
-  form = signal({ name: '', email: '', subject: '', message: '' });
+  form = signal({ name: '', email: '', subject: '', message: '', _gotcha: '' });
   status = signal<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   update(field: string, value: string) {
@@ -29,7 +29,7 @@ export class ContactComponent {
     this.portfolio.sendMessage(f).subscribe({
       next: () => {
         this.status.set('success');
-        this.form.set({ name: '', email: '', subject: '', message: '' });
+        this.form.set({ name: '', email: '', subject: '', message: '', _gotcha: '' });
         setTimeout(() => this.status.set('idle'), 4000);
       },
       error: () => {

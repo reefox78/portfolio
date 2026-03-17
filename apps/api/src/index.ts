@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import { loginLimiter, contactLimiter } from "./middleware/rateLimiters";
 
 import projectsRouter from "./routes/projects";
 import skillsRouter from "./routes/skills";
@@ -13,17 +15,38 @@ import educationsRouter from "./routes/educations";
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 
-// Middlewares globaux
-const allowedOrigins = (process.env.CORS_ORIGIN ?? "*").split(",").map(o => o.trim());
+// Sécurité : headers HTTP
+app.use(helmet());
+
+// CORS : uniquement les origins explicitement autorisées, pas de fallback wildcard
+const allowedOrigins = (process.env.CORS_ORIGIN ?? "")
+  .split(",")
+  .map(o => o.trim())
+  .filter(Boolean);
+
+if (allowedOrigins.length === 0) {
+  throw new Error("CORS_ORIGIN non configuré — serveur refusé de démarrer");
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    // Rejeter les requêtes sans header Origin (hors Postman/curl en dev)
+    if (!origin) {
+      if (process.env.NODE_ENV === "development") {
+        callback(null, true); // autoriser les tools dev (Postman, curl)
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+      return;
+    }
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
 }));
+
 app.use(express.json());
 
 // Routes
