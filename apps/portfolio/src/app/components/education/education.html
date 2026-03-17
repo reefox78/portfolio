@@ -1,0 +1,47 @@
+<section id="education" class="education-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Mon cursus</span>
+      <h2>Formation</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="edu-grid">
+      @for (edu of educations(); track edu.id) {
+        <div class="edu-card reveal card">
+          <div class="edu-icon">🎓</div>
+          <div class="edu-year">{{ edu.graduationYear }}</div>
+          <h3>{{ edu.degree }}</h3>
+          <div class="edu-school">
+            <span>{{ edu.school }}</span>
+            <span class="sep">·</span>
+            <span class="location">{{ edu.location }}</span>
+          </div>
+
+          @if (edu.skills?.length) {
+            <div class="edu-skills">
+              @for (skill of edu.skills; track skill) {
+                <span class="stack-tag">{{ skill }}</span>
+              }
+            </div>
+          }
+
+          @if (edu.projects?.length) {
+            <div class="edu-projects">
+              @for (proj of edu.projects; track proj.id) {
+                <div class="edu-project">
+                  <span class="proj-name">{{ proj.name }}</span>
+                  <p class="proj-desc">{{ proj.description }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @if (educations().length === 0) {
+        <p class="empty-state">Chargement des formations...</p>
+      }
+    </div>
+  </div>
+</section>

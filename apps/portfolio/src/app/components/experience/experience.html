@@ -1,0 +1,60 @@
+<section id="experience" class="experience-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Mon parcours</span>
+      <h2>Expériences</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="timeline">
+      @for (exp of experiences(); track exp.id; let i = $index) {
+        <div class="timeline-item reveal" [class.even]="i % 2 === 1">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content card">
+            <div class="exp-header" (click)="toggle(exp.id)" style="cursor: pointer;">
+              <div class="exp-info">
+                <div class="exp-period">
+                  {{ formatDate(exp.startMonth, exp.startYear) }}
+                  – {{ formatDate(exp.endMonth, exp.endYear) }}
+                </div>
+                <h3>{{ exp.jobTitle }}</h3>
+                <div class="exp-company">
+                  <span class="company-name">{{ exp.company }}</span>
+                  <span class="company-sep">·</span>
+                  <span class="company-location">{{ exp.location }}</span>
+                </div>
+              </div>
+              <button class="expand-btn" [class.open]="isExpanded(exp.id)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="exp-skills">
+              @for (skill of exp.skills; track skill) {
+                <span class="stack-tag">{{ skill }}</span>
+              }
+            </div>
+
+            @if (isExpanded(exp.id) && exp.projects?.length) {
+              <div class="exp-projects">
+                <div class="projects-label">Projets</div>
+                @for (proj of exp.projects; track proj.id) {
+                  <div class="exp-project">
+                    <span class="proj-name">{{ proj.name }}</span>
+                    <p class="proj-desc">{{ proj.description }}</p>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (experiences().length === 0) {
+        <p class="empty-state">Chargement des expériences...</p>
+      }
+    </div>
+  </div>
+</section>

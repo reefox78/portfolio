@@ -1,0 +1,106 @@
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.edu-card {
+  position: relative;
+  padding-top: 48px;
+}
+
+.edu-icon {
+  position: absolute;
+  top: -16px;
+  left: 24px;
+  width: 40px;
+  height: 40px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(248, 152, 32, 0.3);
+}
+
+.edu-year {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'Fira Code', monospace;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.edu-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.edu-school {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+
+  span:first-child { font-weight: 600; color: var(--text-secondary); }
+  .sep { color: var(--text-muted); }
+  .location { color: var(--text-muted); }
+}
+
+.edu-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.stack-tag {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.edu-projects {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.edu-project {
+  margin-bottom: 10px;
+  &:last-child { margin-bottom: 0; }
+}
+
+.proj-name {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.proj-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 48px;
+}
+
+@media (max-width: 600px) {
+  .edu-grid { grid-template-columns: 1fr; }
+}

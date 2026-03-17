@@ -3,13 +3,16 @@
   "private": true,
   "workspaces": [
     "apps/api",
-    "apps/dashboard"
+    "apps/dashboard",
+    "apps/portfolio"
   ],
   "scripts": {
     "api": "npm run dev --workspace=apps/api",
     "dashboard": "npm run start --workspace=apps/dashboard",
+    "portfolio": "npm run start --workspace=apps/portfolio",
     "api:build": "npm run build --workspace=apps/api",
     "dashboard:build": "npm run build --workspace=apps/dashboard",
+    "portfolio:build": "npm run build --workspace=apps/portfolio",
     "api:migrate": "npm run db:migrate --workspace=apps/api",
     "api:seed": "npm run db:seed --workspace=apps/api"
   },
