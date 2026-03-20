@@ -25,6 +25,17 @@
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description" rows="3"></textarea>
           </mat-form-field>
+          <div class="image-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>URL Image</mat-label>
+              <input matInput formControlName="imageUrl" placeholder="https://..." />
+              <mat-hint>Colle l'URL d'une image (Imgur, GitHub raw, etc.)</mat-hint>
+            </mat-form-field>
+            @if (form.value.imageUrl) {
+              <img [src]="form.value.imageUrl" alt="Preview" class="img-preview"
+                   (error)="imgError($event)" />
+            }
+          </div>
           <div class="form-row">
             <mat-form-field appearance="outline" class="flex-1">
               <mat-label>URL Repo</mat-label>

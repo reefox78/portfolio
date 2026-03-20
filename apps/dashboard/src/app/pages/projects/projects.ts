@@ -37,6 +37,7 @@ export class ProjectsComponent implements OnInit {
   form = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
+    imageUrl: [''],
     repoUrl: [''],
     liveUrl: [''],
     stackInput: [''],
@@ -59,6 +60,8 @@ export class ProjectsComponent implements OnInit {
   removeChip(chip: string) {
     this.form.patchValue({ stack: (this.form.value.stack || []).filter((s: string) => s !== chip) });
   }
+
+  imgError(e: Event) { (e.target as HTMLImageElement).style.display = 'none'; }
 
   save() {
     if (this.form.invalid) return;
