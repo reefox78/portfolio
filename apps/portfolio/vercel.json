@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/portfolio/browser",
+  "outputDirectory": "dist/portfolio",
   "framework": "angular",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
