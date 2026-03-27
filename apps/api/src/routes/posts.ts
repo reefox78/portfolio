@@ -29,7 +29,7 @@ router.get("/", async (_req: Request, res: Response) => {
 // GET /api/posts/:slug — public
 router.get("/:slug", async (req: Request, res: Response) => {
   const post = await prisma.post.findUnique({
-    where: { slug: req.params.slug },
+    where: { slug: String(req.params.slug) },
   });
   if (!post || !post.published) {
     res.status(404).json({ error: "Article introuvable" });
